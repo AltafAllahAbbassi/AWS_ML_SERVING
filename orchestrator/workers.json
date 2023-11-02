@@ -1,0 +1,22 @@
+{
+    "container1": {
+        "ip" : "",
+        "port": "", 
+        "status": ""
+    },
+    "container2": {
+        "ip" : "",
+        "port": "", 
+        "status": ""
+    },
+    "container3": {
+        "ip" : "",
+        "port": "", 
+        "status": ""
+    },
+    "container4": {
+        "ip" : "",
+        "port": "", 
+        "status": ""
+    }
+}
