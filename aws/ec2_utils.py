@@ -156,3 +156,19 @@ def get_subnet_ids(ec2, vpc_id, availability_zone):
    
     subnet_ids = [subnet['SubnetId'] for subnet in response['Subnets']]
     return subnet_ids
+
+
+def start_ec2_instance(ec2, instance_id):
+    try:
+        ec2.start_instances(InstanceIds=[instance_id])
+        print(f"Started EC2 instance with ID: {instance_id}")
+    except Exception as e:
+        print(f"Error starting EC2 instance: {e}")
+
+# Stop the EC2 instance
+def stop_ec2_instance(ec2, instance_id):
+    try:
+        ec2.stop_instances(InstanceIds=[instance_id])
+        print(f"Stopped EC2 instance with ID: {instance_id}")
+    except Exception as e:
+        print(f"Error stopping EC2 instance: {e}")
