@@ -2,14 +2,31 @@ from flask import Flask, request, jsonify
 import threading
 import json
 import time
+import requests
 
 app= Flask(__name__)
 lock = threading.Lock()
 request_queue = []
 
-def send_request_to_container(container_id, container_info, incoming_request_data):
+def send_request_to_container(container_id, container_info):
     # code to call instance, should get the ip, port, send the request to it
-    pass
+    ip_address =container_info['ip']
+    port = container_info['port']
+    url = f"http://{ip_address}:{port}/run_model"
+    print(url)
+    try:
+        # Send an HTTP GET request to the URL
+        response = requests.get(url)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            print("Request was successful.")
+            print("Response content:")
+            print(response.text)
+        else:
+            print(f"Request failed with status code: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Request failed with an error: {e}")
 
 def update_container_status(container_id, status, worker_config= "workers.json"):
     with lock: 
@@ -20,7 +37,7 @@ def update_container_status(container_id, status, worker_config= "workers.json")
             json.dump(data, f)
 
 
-def process_request(incoming_request_data, worker_config= "workers.json"):
+def process_request(worker_config= "workers.json"):
     with lock:
         with open(worker_config, 'r') as f:
             data = json.load(f)
@@ -31,17 +48,16 @@ def process_request(incoming_request_data, worker_config= "workers.json"):
             break
     if free_container:
         update_container_status(container_id=container_id, status='busy', worker_config=worker_config)
-        send_request_to_container(container_id=container_id, container_info=data[free_container], incoming_request_data=incoming_request_data)
+        send_request_to_container(container_id=container_id, container_info=data[free_container])
         update_container_status(free_container, 'free')
     else:
-        request_queue.append(incoming_request_data)
+        request_queue.append("incoming_request_data")
 
 
-@app.route('/mew_request', methods=['POST'])
+@app.route('/mew_request', methods=['GET'])
 def new_request():
-    incoming_request_data = request.json
     threading.Thread(
-        target=process_request, args=(incoming_request_data,)
+        target=process_request, args=()
     ).start()
     return jsonify(
         {
