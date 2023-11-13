@@ -39,6 +39,11 @@ def create_subnet(ec2, vpc_id, cidr_block, availability_zone):
     subnet_response = ec2.create_subnet(VpcId=vpc_id, CidrBlock=cidr_block, AvailabilityZone=availability_zone)
     subnet_id =  subnet_response['Subnet']['SubnetId']
     print(f'Subnet id created {subnet_id}')
+
+    # Enabling 'Auto-assign public IPv4 address'
+    ec2.modify_subnet_attribute(SubnetId=subnet_id, MapPublicIpOnLaunch={"Value": True})
+    print(f'Enabled auto-assign public IPv4 address for subnet: {subnet_id}')
+
     return subnet_id
 
 
