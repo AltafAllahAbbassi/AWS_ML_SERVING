@@ -164,3 +164,6 @@ cython_debug/
 
 #*.ipynb
 *.pem
+
+#VScode
+.vscode/
