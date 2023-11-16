@@ -162,3 +162,5 @@ cython_debug/
 *.pem
 
 commands.txt
+
+.DS_Store
