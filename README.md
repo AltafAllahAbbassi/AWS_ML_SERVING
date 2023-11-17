@@ -1,1 +1,0 @@
-# AWS_ML_SERVING
