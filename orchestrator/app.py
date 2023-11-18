@@ -8,6 +8,7 @@ app= Flask(__name__)
 lock = threading.Lock()
 request_queue = []
 
+
 def send_request_to_container(container_id, container_info):
     # code to call instance, should get the ip, port, send the request to it
     ip_address =container_info['ip']
