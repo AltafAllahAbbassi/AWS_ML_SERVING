@@ -13,6 +13,7 @@ responses = {}  # Dictionary to store responses
 def send_request_to_container(container_id, container_info, request_id):
     # Code to call instance, get the IP and port, send the request to it
     ip_address = container_info['ip']
+
     port = container_info['port']
     url = f"http://{ip_address}:{port}/run_model"
     print(url)
